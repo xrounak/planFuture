@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { format } from 'date-fns'
-import { X, Save, Star, Loader2 } from 'lucide-react'
+import { X, Star, Loader2 } from 'lucide-react'
 import { useUiStore } from '../../store/uiStore'
 import { useCreateTask } from '../../hooks/useTasks'
 import type { Task } from '../../types'
@@ -82,11 +82,10 @@ export function TaskForm() {
                   key={pt}
                   type="button"
                   onClick={() => setValue('target_points', pt)}
-                  className={`p-3 rounded-xl flex-1 border transition-all flex flex-col items-center gap-1 ${
-                    targetPoints === pt 
-                    ? 'border-black bg-black text-white dark:border-white dark:bg-white dark:text-black shadow-lg' 
-                    : 'border-carbon-200 dark:border-white/10 text-carbon-400 hover:bg-carbon-50 dark:hover:bg-white/5'
-                  }`}
+                  className={`p-3 rounded-xl flex-1 border transition-all flex flex-col items-center gap-1 ${targetPoints === pt
+                      ? 'border-black bg-black text-white dark:border-white dark:bg-white dark:text-black shadow-lg'
+                      : 'border-carbon-200 dark:border-white/10 text-carbon-400 hover:bg-carbon-50 dark:hover:bg-white/5'
+                    }`}
                 >
                   <Star className={`w-5 h-5 ${targetPoints >= pt ? 'fill-current' : ''}`} />
                   <span className="text-[10px] font-black">{pt}</span>

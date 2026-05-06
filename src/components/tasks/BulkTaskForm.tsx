@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { X, Send, Plus, Loader2, Trash2, Zap, History } from 'lucide-react'
+import { X, Plus, Loader2, Trash2, Zap, History } from 'lucide-react'
 import { useUiStore } from '../../store/uiStore'
 import { useCreateTask, useTasks } from '../../hooks/useTasks'
 import { format, subDays } from 'date-fns'
@@ -12,7 +12,7 @@ interface TaskDraft {
 export function BulkTaskForm() {
   const { activeDate, setBulkFormOpen } = useUiStore()
   const createTask = useCreateTask()
-  
+
   // To support "Clone from Yesterday", we might need to fetch yesterday's tasks
   const yesterdayDate = subDays(activeDate, 1)
   const yesterdayStr = format(yesterdayDate, 'yyyy-MM-dd')
@@ -53,7 +53,7 @@ export function BulkTaskForm() {
     const dateStr = format(activeDate, 'yyyy-MM-dd')
 
     try {
-      const promises = validDrafts.map(draft => 
+      const promises = validDrafts.map(draft =>
         createTask.mutateAsync({
           title: draft.title,
           target_points: draft.points as any,
@@ -82,7 +82,7 @@ export function BulkTaskForm() {
           </div>
           <div className="flex items-center gap-4">
             {yesterdayTasks && yesterdayTasks.length > 0 && (
-              <button 
+              <button
                 onClick={cloneYesterday}
                 className="flex items-center gap-2 px-4 py-2 bg-black text-white dark:bg-white dark:text-black rounded-full text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all shadow-lg"
               >
@@ -95,7 +95,7 @@ export function BulkTaskForm() {
             </button>
           </div>
         </div>
-        
+
         <div className="flex-1 overflow-y-auto p-10">
           <div className="space-y-3">
             <div className="grid grid-cols-[1fr_100px_48px] gap-4 px-4 mb-4">
@@ -103,7 +103,7 @@ export function BulkTaskForm() {
               <span className="text-[10px] font-black uppercase tracking-widest text-carbon-400 text-center">Value</span>
               <span></span>
             </div>
-            
+
             {drafts.map((draft, index) => (
               <div key={index} className="grid grid-cols-[1fr_100px_48px] gap-4 group">
                 <input
@@ -126,7 +126,7 @@ export function BulkTaskForm() {
                 >
                   {[1, 2, 3, 4, 5].map(p => <option key={p} value={p}>{p} Pts</option>)}
                 </select>
-                <button 
+                <button
                   onClick={() => removeRow(index)}
                   className="flex items-center justify-center text-carbon-300 hover:text-red-500 transition-colors"
                   disabled={drafts.length === 1}
@@ -136,7 +136,7 @@ export function BulkTaskForm() {
               </div>
             ))}
 
-            <button 
+            <button
               onClick={addRow}
               className="w-full py-4 mt-4 border-2 border-dashed border-carbon-200 dark:border-white/10 rounded-2xl flex items-center justify-center gap-2 text-carbon-400 hover:text-black dark:hover:text-white hover:border-black dark:hover:border-white transition-all font-black uppercase text-[10px] tracking-widest"
             >
@@ -151,7 +151,7 @@ export function BulkTaskForm() {
             <span className="text-[10px] font-black uppercase tracking-widest text-carbon-400">Total Potential</span>
             <span className="text-xl font-black text-black dark:text-white">{drafts.reduce((acc, d) => acc + (d.title.trim() ? d.points : 0), 0)} Points</span>
           </div>
-          
+
           <button
             onClick={handleSubmit}
             disabled={loading || !drafts.some(d => d.title.trim())}
