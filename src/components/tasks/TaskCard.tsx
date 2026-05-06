@@ -46,34 +46,34 @@ export function TaskCard({ task }: TaskCardProps) {
       }}
       style={style}
       onMouseMove={handleMouseMove}
-      className={`premium-card p-5 flex items-center gap-4 transition-all duration-500 ${
+      className={`premium-card p-3 sm:p-5 flex items-center gap-3 sm:gap-4 transition-all duration-500 ${
         isDragging ? 'z-50 shadow-2xl scale-105 border-white/20' : ''
       }`}
     >
-      <div {...attributes} {...listeners} className="cursor-grab text-carbon-400 hover:text-black dark:text-carbon-600 dark:hover:text-white transition-colors">
-        <GripVertical className="w-5 h-5" />
+      <div {...attributes} {...listeners} className="cursor-grab text-carbon-400 hover:text-black dark:text-carbon-600 dark:hover:text-white transition-colors p-1">
+        <GripVertical className="w-4 h-4 sm:w-5 sm:h-5" />
       </div>
 
       <div className="flex-1 min-w-0">
-        <h3 className="font-bold text-lg text-black dark:text-white tracking-tight leading-tight">{task.title}</h3>
+        <h3 className="font-bold text-base sm:text-lg text-black dark:text-white tracking-tight leading-tight truncate">{task.title}</h3>
         {task.description && (
-          <p className="text-sm text-carbon-500 dark:text-carbon-400 truncate mt-1">{task.description}</p>
+          <p className="text-[10px] sm:text-sm text-carbon-500 dark:text-carbon-400 truncate mt-0.5">{task.description}</p>
         )}
       </div>
 
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-3 sm:gap-6">
         <div className="flex flex-col items-center">
-          <span className="text-[10px] font-black uppercase tracking-tighter text-carbon-400 mb-0.5">Points</span>
-          <div className="flex items-center gap-1 font-black text-black dark:text-white">
-            <Target className="w-4 h-4" />
+          <span className="text-[8px] sm:text-[10px] font-black uppercase tracking-tighter text-carbon-400 mb-0.5">Points</span>
+          <div className="flex items-center gap-1 font-black text-xs sm:text-base text-black dark:text-white">
+            <Target className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             {task.target_points}
           </div>
         </div>
         
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 sm:gap-2">
           {!task.is_public && (
             <span title="Private">
-              <UserIcon className="w-4 h-4 text-carbon-400" />
+              <UserIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-carbon-400" />
             </span>
           )}
           <button
@@ -82,7 +82,7 @@ export function TaskCard({ task }: TaskCardProps) {
             className="text-carbon-300 hover:text-red-500 transition-colors p-1"
             title="Delete task"
           >
-            <Trash2 className="w-5 h-5" />
+            <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         </div>
       </div>

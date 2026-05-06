@@ -88,9 +88,9 @@ export function ProfilePage() {
   return (
     <div className="space-y-10">
       <header className="flex flex-col md:flex-row justify-between items-center md:items-end gap-6 border-b border-carbon-100 dark:border-white/5 pb-10">
-        <div className="flex flex-col md:flex-row items-center md:items-end gap-8 text-center md:text-left">
+        <div className="flex flex-col md:flex-row items-center md:items-end gap-6 sm:gap-8 text-center md:text-left w-full md:w-auto">
           <div className="relative group">
-            <div className="w-32 h-32 rounded-full bg-black text-white dark:bg-white dark:text-black flex items-center justify-center overflow-hidden text-4xl font-black italic border-4 border-white dark:border-black shadow-2xl transition-transform group-hover:scale-105">
+            <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-black text-white dark:bg-white dark:text-black flex items-center justify-center overflow-hidden text-2xl sm:text-4xl font-black italic border-4 border-white dark:border-black shadow-2xl transition-transform group-hover:scale-105">
               {profile.avatar_url ? (
                 <img src={profile.avatar_url} alt={profile.username} className="w-full h-full object-cover" />
               ) : (
@@ -100,30 +100,30 @@ export function ProfilePage() {
             {isOwnProfile && (
               <button 
                 onClick={() => setIsEditing(true)}
-                className="absolute -bottom-2 -right-2 p-3 bg-black text-white dark:bg-white dark:text-black rounded-full shadow-xl hover:scale-110 active:scale-90 transition-all border-2 border-white dark:border-black"
+                className="absolute -bottom-1 -right-1 sm:-bottom-2 sm:-right-2 p-2.5 sm:p-3 bg-black text-white dark:bg-white dark:text-black rounded-full shadow-xl hover:scale-110 active:scale-90 transition-all border-2 border-white dark:border-black"
               >
-                <Edit3 className="w-4 h-4" />
+                <Edit3 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </button>
             )}
           </div>
-          <div>
-            <div className="flex items-center gap-2 text-carbon-400 dark:text-carbon-500 mb-2 font-black uppercase tracking-[0.2em] text-xs justify-center md:justify-start">
-              <User className="w-4 h-4" />
+          <div className="flex-1">
+            <div className="flex items-center gap-2 text-carbon-400 dark:text-carbon-500 mb-2 font-black uppercase tracking-[0.2em] text-[10px] sm:text-xs justify-center md:justify-start">
+              <User className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               Operator Profile
             </div>
-            <h1 className="text-5xl font-black tracking-tighter text-black dark:text-white italic uppercase leading-none">
+            <h1 className="text-2xl sm:text-4xl font-black tracking-tighter text-black dark:text-white italic uppercase leading-none">
               {profile.nickname || profile.username}
             </h1>
             {profile.nickname && (
-               <p className="text-lg text-carbon-500 font-bold mt-2 uppercase tracking-tight">@{profile.username}</p>
+               <p className="text-md sm:text-lg text-carbon-500 font-bold mt-2 uppercase tracking-tight">@{profile.username}</p>
             )}
-            <p className="text-[10px] font-black text-carbon-400 uppercase tracking-widest mt-4">
+            <p className="text-[9px] sm:text-[10px] font-black text-carbon-400 uppercase tracking-widest mt-3 sm:mt-4">
               Active since {format(parseISO(profile.created_at), 'MM.yyyy')}
             </p>
           </div>
         </div>
-        <div className="text-right hidden lg:block">
-          <div className="text-5xl font-black text-black dark:text-white tabular-nums tracking-tighter">
+        <div className="text-center md:text-right hidden sm:block">
+          <div className="text-3xl sm:text-5xl font-black text-black dark:text-white tabular-nums tracking-tighter">
             {profile.total_points}
           </div>
           <div className="text-xs font-black text-carbon-400 uppercase tracking-widest mt-1">Accumulated Value</div>

@@ -5,6 +5,12 @@
 @tailwind utilities;
 
 @layer base {
+  html, body {
+    @apply overflow-x-hidden;
+    width: 100%;
+    position: relative;
+  }
+
   body {
     font-family: 'Inter', sans-serif;
     @apply bg-carbon-50 text-carbon-950 antialiased transition-colors duration-500 dark:bg-black dark:text-carbon-50;
@@ -42,13 +48,16 @@
 
 @layer components {
   .premium-card {
-    @apply bg-white dark:bg-carbon-950 border border-carbon-200 dark:border-white/10 rounded-3xl transition-all duration-500 overflow-hidden relative shadow-sm;
+    @apply bg-white dark:bg-carbon-950 border border-carbon-200 dark:border-white/5 rounded-3xl transition-all duration-500 overflow-hidden relative shadow-sm;
     transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
   }
 
-  .premium-card:hover {
-    @apply border-carbon-400 dark:border-white/40 shadow-2xl dark:shadow-white/5;
-    transform: perspective(1000px) rotateX(2deg) rotateY(-1deg) scale(1.01);
+  /* Disable 3D tilt on mobile to prevent overflow and performance issues */
+  @media (min-width: 768px) {
+    .premium-card:hover {
+      @apply border-carbon-400 dark:border-white/40 shadow-2xl dark:shadow-white/5;
+      transform: perspective(1000px) rotateX(2deg) rotateY(-1deg) scale(1.01);
+    }
   }
 
   .premium-card::after {
@@ -64,5 +73,9 @@
   /* Heatmap Overrides */
   .react-calendar-heatmap text {
     @apply text-[8px] font-black fill-carbon-400;
+  }
+  
+  .heatmap-container {
+    @apply w-full overflow-hidden;
   }
 }

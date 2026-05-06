@@ -10,17 +10,17 @@ export function GlobalFeedPage() {
 
   return (
     <div className="space-y-10">
-      <header className="flex justify-between items-end border-b border-carbon-100 dark:border-white/5 pb-8">
+      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-end border-b border-carbon-100 dark:border-white/5 pb-8 gap-6">
         <div>
           <div className="flex items-center gap-2 text-carbon-400 dark:text-carbon-500 mb-2 font-black uppercase tracking-[0.2em] text-xs">
             <Globe className="w-4 h-4" />
             Global Pulse
           </div>
-          <h1 className="text-5xl font-black tracking-tighter text-black dark:text-white italic uppercase leading-none">Community</h1>
-          <p className="text-lg text-carbon-500 font-medium mt-3 uppercase tracking-tight">Public Achievement Log</p>
+          <h1 className="text-2xl sm:text-4xl font-black tracking-tighter text-black dark:text-white italic uppercase leading-none">Community</h1>
+          <p className="text-md sm:text-lg text-carbon-500 font-medium mt-3 uppercase tracking-tight">Public Achievement Log</p>
         </div>
         {!session && (
-          <Link to="/auth" className="px-8 py-3 bg-black text-white dark:bg-white dark:text-black rounded-full font-black uppercase tracking-tighter hover:scale-105 transition-transform">
+          <Link to="/auth" className="px-8 py-3 bg-black text-white dark:bg-white dark:text-black rounded-full font-black uppercase tracking-tighter hover:scale-105 transition-transform w-full sm:w-auto text-center">
             Join Now
           </Link>
         )}

@@ -11,29 +11,29 @@ export function LeaderboardPage() {
 
   return (
     <div className="space-y-10">
-      <header className="flex justify-between items-end border-b border-carbon-100 dark:border-white/5 pb-8">
-        <div>
+      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-end border-b border-carbon-100 dark:border-white/5 pb-8 gap-6">
+        <div className="w-full sm:w-auto">
           <div className="flex items-center gap-2 text-carbon-400 dark:text-carbon-500 mb-2 font-black uppercase tracking-[0.2em] text-xs">
             <Trophy className="w-4 h-4" />
             Rankings
           </div>
-          <h1 className="text-5xl font-black tracking-tighter text-black dark:text-white italic uppercase leading-none">Leaders</h1>
-          <div className="flex bg-carbon-100/50 dark:bg-white/5 p-1 rounded-full mt-4 w-fit">
+          <h1 className="text-2xl sm:text-4xl font-black tracking-tighter text-black dark:text-white italic uppercase leading-none">Leaders</h1>
+          <div className="flex bg-carbon-100/50 dark:bg-white/5 p-1 rounded-full mt-4 w-full sm:w-fit">
             <button
               onClick={() => setTab('weekly')}
-              className={`px-6 py-1.5 text-xs font-black uppercase tracking-tighter rounded-full transition-all ${tab === 'weekly' ? 'bg-black text-white dark:bg-white dark:text-black shadow-lg' : 'text-carbon-500 hover:text-black dark:hover:text-white'}`}
+              className={`flex-1 sm:flex-none px-6 py-2 text-[10px] sm:text-xs font-black uppercase tracking-tighter rounded-full transition-all ${tab === 'weekly' ? 'bg-black text-white dark:bg-white dark:text-black shadow-lg' : 'text-carbon-500 hover:text-black dark:hover:text-white'}`}
             >
               Weekly
             </button>
             <button
               onClick={() => setTab('alltime')}
-              className={`px-6 py-1.5 text-xs font-black uppercase tracking-tighter rounded-full transition-all ${tab === 'alltime' ? 'bg-black text-white dark:bg-white dark:text-black shadow-lg' : 'text-carbon-500 hover:text-black dark:hover:text-white'}`}
+              className={`flex-1 sm:flex-none px-6 py-2 text-[10px] sm:text-xs font-black uppercase tracking-tighter rounded-full transition-all ${tab === 'alltime' ? 'bg-black text-white dark:bg-white dark:text-black shadow-lg' : 'text-carbon-500 hover:text-black dark:hover:text-white'}`}
             >
               All Time
             </button>
           </div>
         </div>
-        <div className="text-right hidden sm:block">
+        <div className="text-left sm:text-right hidden sm:block">
           <div className="text-sm font-black text-carbon-400 uppercase tracking-widest mb-1">Status</div>
           <div className="text-2xl font-black text-black dark:text-white uppercase italic tracking-tighter">Elite Tier</div>
         </div>

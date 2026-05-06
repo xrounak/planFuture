@@ -56,29 +56,30 @@ export function PlanPage() {
 
   return (
     <div className="space-y-10">
-      <header className="flex justify-between items-end border-b border-carbon-100 dark:border-white/5 pb-8">
+      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-end border-b border-carbon-100 dark:border-white/5 pb-8 gap-6">
         <div>
           <div className="flex items-center gap-2 text-carbon-400 dark:text-carbon-500 mb-2 font-black uppercase tracking-[0.2em] text-xs">
             <Calendar className="w-4 h-4" />
             Scheduling
           </div>
-          <h1 className="text-5xl font-black tracking-tighter text-black dark:text-white italic uppercase">Plan Tomorrow</h1>
-          <div className="flex items-center gap-4 mt-3">
-            <p className="text-lg text-carbon-500 font-medium">{formattedDisplayDate}</p>
+          <h1 className="text-2xl sm:text-4xl font-black tracking-tighter text-black dark:text-white italic uppercase leading-none">Plan Tomorrow</h1>
+          <div className="flex flex-wrap items-center gap-3 mt-3">
+            <p className="text-md sm:text-lg text-carbon-500 font-medium">{formattedDisplayDate}</p>
             <button 
               onClick={() => setBulkFormOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-1 bg-carbon-100 dark:bg-white/5 text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all"
+              className="flex items-center gap-1.5 px-3 py-1 bg-carbon-100 dark:bg-white/5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all"
             >
               <Layers className="w-3 h-3" />
               Batch Mode
             </button>
           </div>
         </div>
-        <div className="text-right">
-          <div className="text-5xl font-black text-black dark:text-white tabular-nums tracking-tighter">
+        <div className="text-left sm:text-right w-full sm:w-auto flex sm:flex-col justify-between items-end sm:items-end">
+          <div className="sm:hidden text-xs font-black text-carbon-400 uppercase tracking-widest">Total Tasks</div>
+          <div className="text-3xl sm:text-5xl font-black text-black dark:text-white tabular-nums tracking-tighter">
             {tasks.length}
           </div>
-          <div className="text-xs font-black text-carbon-400 uppercase tracking-widest mt-1">Total Tasks</div>
+          <div className="hidden sm:block text-xs font-black text-carbon-400 uppercase tracking-widest mt-1">Total Tasks</div>
         </div>
       </header>
 

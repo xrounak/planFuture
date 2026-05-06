@@ -67,10 +67,10 @@ export function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-carbon-50/50 dark:bg-slate-950/50">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-carbon-50/50 dark:bg-black/50">
       <div className="w-full max-w-md p-8 bg-white/80 dark:bg-carbon-900/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-carbon-200 dark:border-carbon-800">
         <div className="text-center mb-10">
-          <h1 className="text-5xl font-black mb-2 bg-black dark:bg-white bg-clip-text text-transparent uppercase italic tracking-tighter">TomorrowOS</h1>
+          <h1 className="text-4xl sm:text-5xl font-black mb-2 bg-black dark:bg-white bg-clip-text text-transparent uppercase italic tracking-tighter">TomorrowOS</h1>
           <p className="text-carbon-500 font-bold uppercase tracking-widest text-[10px]">Plan tonight. Score tomorrow.</p>
         </div>
 
