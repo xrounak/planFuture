@@ -11,25 +11,22 @@ export function BottomNav() {
   ]
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-brand-900/80 backdrop-blur-lg border-t border-brand-200 dark:border-brand-800 md:hidden z-50 safe-area-pb">
-      <div className="flex justify-around items-center px-2 py-2">
+    <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-lg bg-black/90 dark:bg-white/90 backdrop-blur-xl border border-white/10 dark:border-black/10 rounded-full md:hidden z-50 shadow-2xl transition-all duration-500 overflow-hidden">
+      <div className="flex justify-around items-center px-4 py-3">
         {links.map(({ to, icon: Icon, label }) => (
           <NavLink
             key={to}
             to={to}
             className={({ isActive }) =>
-              `flex flex-col items-center p-2 rounded-xl text-[10px] font-semibold transition-all duration-300 ${isActive
-                ? 'text-brand-600 dark:text-brand-300 transform scale-110'
-                : 'text-brand-400/70 dark:text-brand-500/70 hover:text-brand-600 dark:hover:text-brand-400'
+              `flex flex-col items-center p-2 transition-all duration-500 ${
+                isActive 
+                  ? 'text-white dark:text-black scale-110 drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]' 
+                  : 'text-carbon-500/50 dark:text-carbon-400/50 hover:text-white dark:hover:text-black'
               }`
             }
           >
-            {({ isActive }) => (
-              <>
-                <Icon className={`w-6 h-6 mb-1 ${isActive ? 'drop-shadow-md' : ''}`} />
-                {label}
-              </>
-            )}
+            <Icon className="w-6 h-6" />
+            <span className="text-[10px] font-black uppercase tracking-tighter mt-0.5">{label}</span>
           </NavLink>
         ))}
       </div>

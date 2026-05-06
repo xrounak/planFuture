@@ -12,58 +12,48 @@ interface ScoreSliderProps {
 export function ScoreSlider({ initialScore, targetPoints, readOnly, onChange }: ScoreSliderProps) {
   const [value, setValue] = useState<number>(initialScore ?? 0)
 
-  const colorMap = [
-    'text-score-0',
-    'text-score-1',
-    'text-score-2',
-    'text-score-3',
-    'text-score-4',
-    'text-score-5',
-  ]
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = parseInt(e.target.value) as ScoreValue
     setValue(val)
     onChange(val)
   }
 
-  const emojis = ['❌', '🌱', '🔄', '⚡', '🎯', '✅']
-
   return (
-    <div className="w-full flex flex-col items-center gap-2 mt-4">
-      <div className="flex w-full items-center justify-between px-2">
-        <span className="text-xl">{emojis[0]}</span>
-        <span className="text-xl">{emojis[2]}</span>
-        <span className="text-xl">{emojis[5]}</span>
+    <div className="w-full space-y-6">
+      <div className="relative">
+        <input
+          type="range"
+          min="0"
+          max={targetPoints}
+          step="1"
+          value={value}
+          onChange={handleChange}
+          disabled={readOnly}
+          className={`w-full h-2 rounded-full appearance-none cursor-pointer accent-black dark:accent-white ${
+            readOnly ? 'opacity-30 cursor-not-allowed' : ''
+          }`}
+          style={{
+            background: `linear-gradient(to right, 
+              #000 0%, 
+              #333 50%, 
+              #666 100%)`
+          }}
+        />
+        <div className="flex justify-between mt-3">
+          {[...Array(targetPoints + 1)].map((_, i) => (
+            <div key={i} className="flex flex-col items-center">
+              <div className={`w-1 h-1 rounded-full mb-1 ${value >= i ? 'bg-black dark:bg-white' : 'bg-carbon-200 dark:bg-white/10'}`} />
+              <span className={`text-[10px] font-black ${value === i ? 'text-black dark:text-white' : 'text-carbon-400'}`}>{i}</span>
+            </div>
+          ))}
+        </div>
       </div>
       
-      <input
-        type="range"
-        min="0"
-        max={targetPoints}
-        step="1"
-        value={value}
-        onChange={handleChange}
-        disabled={readOnly}
-        className={`w-full h-3 rounded-lg appearance-none cursor-pointer ${
-          readOnly ? 'opacity-50 cursor-not-allowed' : ''
-        }`}
-        style={{
-          background: `linear-gradient(to right, 
-            #ef4444 0%, 
-            #f97316 20%, 
-            #eab308 40%, 
-            #84cc16 60%, 
-            #22c55e 80%, 
-            #10b981 100%)`
-        }}
-      />
-      
-      <div className="flex flex-col items-center">
-        <span className={`text-sm font-bold ${colorMap[value]}`}>
-          {value} / {targetPoints} Points
-        </span>
-        <span className="text-xs text-brand-500 font-medium">{SCORE_LABELS[value as ScoreValue]}</span>
+      <div className="flex flex-col items-center border-t border-carbon-100 dark:border-white/5 pt-4">
+        <div className="text-3xl font-black text-black dark:text-white italic tracking-tighter tabular-nums leading-none">
+          {value} <span className="text-carbon-400 not-italic text-sm">/ {targetPoints}</span>
+        </div>
+        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-carbon-500 mt-2">{SCORE_LABELS[value as ScoreValue]}</span>
       </div>
     </div>
   )

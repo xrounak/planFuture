@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { format } from 'date-fns'
-import { CheckCircle2, Loader2 } from 'lucide-react'
+import { CheckCircle2, Loader2, ClipboardCheck } from 'lucide-react'
 import { useTasks, useScoreTask } from '../hooks/useTasks'
 import { useSubmitDailySummary } from '../hooks/useReview'
 import { ScoreSlider } from '../components/tasks/ScoreSlider'
@@ -54,16 +54,16 @@ export function ReviewPage() {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center p-8">
-        <Loader2 className="w-8 h-8 animate-spin text-brand-500" />
+      <div className="flex justify-center p-20">
+        <Loader2 className="w-12 h-12 animate-spin text-black dark:text-white" />
       </div>
     )
   }
 
   if (!tasks || tasks.length === 0) {
     return (
-      <div className="text-center p-8 bg-brand-50 dark:bg-brand-900/50 rounded-2xl border border-dashed border-brand-200 dark:border-brand-700 mt-8">
-        <p className="text-brand-600/70 dark:text-brand-400">No tasks were planned for today.</p>
+      <div className="text-center p-20 premium-card border-dashed bg-transparent mt-8">
+        <p className="text-carbon-400 font-bold uppercase tracking-widest text-sm">No data points for review today</p>
       </div>
     )
   }
@@ -74,21 +74,33 @@ export function ReviewPage() {
   })))
 
   return (
-    <div className="space-y-6 pb-24">
-      <div className="bg-white dark:bg-brand-900 p-6 rounded-2xl shadow-sm border border-brand-100 dark:border-brand-800 text-center">
-        <h1 className="text-2xl font-bold mb-2">Review Today</h1>
-        <p className="text-sm text-brand-600 dark:text-brand-300">
-          How much did you accomplish?
-        </p>
-      </div>
+    <div className="space-y-10">
+      <header className="flex justify-between items-end border-b border-carbon-100 dark:border-white/5 pb-8">
+        <div>
+          <div className="flex items-center gap-2 text-carbon-400 dark:text-carbon-500 mb-2 font-black uppercase tracking-[0.2em] text-xs">
+            <ClipboardCheck className="w-4 h-4" />
+            Operational Review
+          </div>
+          <h1 className="text-5xl font-black tracking-tighter text-black dark:text-white italic uppercase leading-none">Post-Score</h1>
+          <p className="text-lg text-carbon-500 font-medium mt-3 uppercase tracking-tight">Evaluate daily output</p>
+        </div>
+      </header>
 
       <div className="space-y-4">
         {tasks.map(task => {
           const isReadonly = task.actual_points !== null
           return (
-            <div key={task.id} className="bg-white dark:bg-brand-900 p-4 rounded-xl border border-brand-100 dark:border-brand-800 shadow-sm">
-              <h3 className="font-semibold text-lg">{task.title}</h3>
-              {task.description && <p className="text-sm text-brand-600/70 mb-2">{task.description}</p>}
+            <div key={task.id} className="premium-card p-6">
+              <div className="flex justify-between items-start gap-4 mb-6">
+                <div>
+                  <h3 className="text-xl font-black text-black dark:text-white uppercase italic tracking-tighter">{task.title}</h3>
+                  {task.description && <p className="text-sm text-carbon-500 font-medium mt-1">{task.description}</p>}
+                </div>
+                <div className="text-right">
+                  <div className="text-[10px] font-black text-carbon-400 uppercase tracking-widest">Weight</div>
+                  <div className="text-xl font-black text-black dark:text-white">{task.target_points}</div>
+                </div>
+              </div>
 
               <ScoreSlider
                 targetPoints={task.target_points}
@@ -101,34 +113,36 @@ export function ReviewPage() {
         })}
       </div>
 
-      {!hasUnscoredTasks || isSubmitted ? (
-        <div className="bg-white dark:bg-brand-900 p-8 rounded-2xl shadow-sm border border-brand-100 dark:border-brand-800 flex flex-col items-center">
-          <h2 className="text-xl font-bold mb-6">Daily Summary</h2>
-          <ProgressRing percentage={completion_pct} />
-          <div className="mt-6 flex gap-6 text-center">
-            <div>
-              <div className="text-2xl font-bold text-brand-500">{total_earned}</div>
-              <div className="text-xs uppercase font-semibold text-brand-400">Earned</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-brand-900 dark:text-brand-50">{total_possible}</div>
-              <div className="text-xs uppercase font-semibold text-brand-400">Possible</div>
+      <div className="pb-32">
+        {!hasUnscoredTasks || isSubmitted ? (
+          <div className="premium-card p-10 flex flex-col items-center">
+            <h2 className="text-xs font-black uppercase tracking-[0.2em] text-carbon-400 mb-8">Daily Performance Index</h2>
+            <ProgressRing percentage={completion_pct} />
+            <div className="mt-10 flex gap-12 text-center border-t border-carbon-100 dark:border-white/5 pt-8 w-full justify-center">
+              <div>
+                <div className="text-3xl font-black text-black dark:text-white tabular-nums tracking-tighter">{total_earned}</div>
+                <div className="text-[10px] font-black text-carbon-400 uppercase tracking-[0.2em] mt-1">Earned</div>
+              </div>
+              <div>
+                <div className="text-3xl font-black text-black dark:text-white opacity-40 tabular-nums tracking-tighter">{total_possible}</div>
+                <div className="text-[10px] font-black text-carbon-400 uppercase tracking-[0.2em] mt-1">Possible</div>
+              </div>
             </div>
           </div>
-        </div>
-      ) : (
-        <button
-          onClick={handleSubmit}
-          disabled={isSubmitDisabled}
-          className="w-full py-4 rounded-xl bg-brand-500 text-white font-bold text-lg hover:bg-brand-600 transition-colors flex items-center justify-center disabled:opacity-50"
-        >
-          {scoreTask.isPending || submitSummary.isPending ? (
-            <Loader2 className="w-6 h-6 animate-spin" />
-          ) : (
-            <><CheckCircle2 className="w-6 h-6 mr-2" /> Submit Review</>
-          )}
-        </button>
-      )}
+        ) : (
+          <button
+            onClick={handleSubmit}
+            disabled={isSubmitDisabled}
+            className="w-full py-5 rounded-full bg-black text-white dark:bg-white dark:text-black font-black uppercase tracking-[0.2em] hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center disabled:opacity-50 shadow-2xl"
+          >
+            {scoreTask.isPending || submitSummary.isPending ? (
+              <Loader2 className="w-8 h-8 animate-spin" />
+            ) : (
+              <><CheckCircle2 className="w-8 h-8 mr-3" /> Finalize Transmission</>
+            )}
+          </button>
+        )}
+      </div>
     </div>
   )
 }

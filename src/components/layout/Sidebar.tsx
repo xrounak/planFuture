@@ -16,21 +16,21 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="hidden md:flex flex-col w-64 h-screen border-r border-brand-200 dark:border-brand-800 bg-white/80 dark:bg-brand-900/80 backdrop-blur-md sticky top-0">
-      <div className="p-6">
-        <h1 className="text-2xl font-extrabold bg-gradient-to-r from-brand-600 to-violet-500 bg-clip-text text-transparent">TomorrowOS</h1>
+    <aside className="hidden md:flex flex-col w-64 h-screen border-r border-carbon-200 dark:border-white/10 bg-white dark:bg-black sticky top-0 transition-colors duration-500">
+      <div className="p-8">
+        <h1 className="text-2xl font-black tracking-tighter text-black dark:text-white uppercase italic">Tomorrow OS</h1>
       </div>
       
-      <nav className="flex-1 px-4 space-y-2 mt-4">
+      <nav className="flex-1 px-4 space-y-1 mt-4">
         {links.map(({ to, icon: Icon, label }) => (
           <NavLink
             key={to}
             to={to}
             className={({ isActive }) =>
-              `flex items-center px-4 py-3 rounded-xl transition-all duration-300 font-medium ${
+              `flex items-center px-4 py-3 rounded-2xl transition-all duration-300 font-bold tracking-tight ${
                 isActive 
-                  ? 'bg-brand-500 text-white shadow-lg shadow-brand-500/30' 
-                  : 'text-brand-600/70 dark:text-brand-300/70 hover:bg-brand-50 dark:hover:bg-brand-800/50 hover:text-brand-900 dark:hover:text-brand-50'
+                  ? 'bg-black text-white dark:bg-white dark:text-black shadow-xl shadow-black/10 dark:shadow-white/5' 
+                  : 'text-carbon-400 hover:text-black dark:text-carbon-600 dark:hover:text-white hover:bg-carbon-100 dark:hover:bg-white/5'
               }`
             }
           >
@@ -40,13 +40,13 @@ export function Sidebar() {
         ))}
       </nav>
 
-      <div className="p-4 border-t border-brand-200 dark:border-brand-800">
+      <div className="p-6">
         <button 
           onClick={handleLogout}
-          className="flex items-center w-full px-4 py-3 text-brand-600/70 dark:text-brand-300/70 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 rounded-xl transition-all duration-300 font-medium"
+          className="flex items-center w-full px-4 py-3 text-carbon-400 dark:text-carbon-600 hover:text-red-500 transition-all duration-300 font-bold"
         >
           <LogOut className="w-5 h-5 mr-3" />
-          Sign Out
+          Logout
         </button>
       </div>
     </aside>

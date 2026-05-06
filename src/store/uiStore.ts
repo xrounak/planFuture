@@ -3,8 +3,10 @@ import { addDays } from 'date-fns'
 
 interface UiState {
   isTaskFormOpen: boolean
+  isBulkFormOpen: boolean
   activeDate: Date
   setTaskFormOpen: (open: boolean) => void
+  setBulkFormOpen: (open: boolean) => void
   setActiveDate: (date: Date) => void
 }
 
@@ -15,8 +17,10 @@ export const useUiStore = create<UiState>((set) => {
 
   return {
     isTaskFormOpen: false,
+    isBulkFormOpen: false,
     activeDate: defaultDate,
     setTaskFormOpen: (open) => set({ isTaskFormOpen: open }),
+    setBulkFormOpen: (open) => set({ isBulkFormOpen: open }),
     setActiveDate: (date) => set({ activeDate: date }),
   }
 })

@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
-import { Plus, Loader2 } from 'lucide-react'
+import { Plus, Loader2, Calendar, Layers } from 'lucide-react'
 import { useUiStore } from '../store/uiStore'
 import { useTasks } from '../hooks/useTasks'
 import { TaskForm } from '../components/tasks/TaskForm'
+import { BulkTaskForm } from '../components/tasks/BulkTaskForm'
 import { TaskCard } from '../components/tasks/TaskCard'
 import {
   DndContext,
@@ -23,7 +24,7 @@ import {
 import type { Task } from '../types'
 
 export function PlanPage() {
-  const { activeDate, isTaskFormOpen, setTaskFormOpen } = useUiStore()
+  const { activeDate, isTaskFormOpen, setTaskFormOpen, isBulkFormOpen, setBulkFormOpen } = useUiStore()
   const dateStr = format(activeDate, 'yyyy-MM-dd')
   const { data: serverTasks, isLoading } = useTasks(dateStr)
   
@@ -54,33 +55,60 @@ export function PlanPage() {
   const formattedDisplayDate = format(activeDate, 'EEEE, MMM d')
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center bg-white dark:bg-brand-900 p-4 rounded-2xl shadow-sm border border-brand-100 dark:border-brand-800">
+    <div className="space-y-10">
+      <header className="flex justify-between items-end border-b border-carbon-100 dark:border-white/5 pb-8">
         <div>
-          <h1 className="text-2xl font-bold">Plan Tomorrow</h1>
-          <p className="text-sm text-brand-600 dark:text-brand-300 mt-1">{formattedDisplayDate}</p>
+          <div className="flex items-center gap-2 text-carbon-400 dark:text-carbon-500 mb-2 font-black uppercase tracking-[0.2em] text-xs">
+            <Calendar className="w-4 h-4" />
+            Scheduling
+          </div>
+          <h1 className="text-5xl font-black tracking-tighter text-black dark:text-white italic uppercase">Plan Tomorrow</h1>
+          <div className="flex items-center gap-4 mt-3">
+            <p className="text-lg text-carbon-500 font-medium">{formattedDisplayDate}</p>
+            <button 
+              onClick={() => setBulkFormOpen(true)}
+              className="flex items-center gap-1.5 px-3 py-1 bg-carbon-100 dark:bg-white/5 text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all"
+            >
+              <Layers className="w-3 h-3" />
+              Batch Mode
+            </button>
+          </div>
         </div>
         <div className="text-right">
-          <div className="text-xs font-medium text-brand-500 uppercase tracking-wider mb-1">Tasks</div>
-          <div className="text-2xl font-bold bg-brand-50 text-brand-600 dark:bg-brand-800 dark:text-brand-400 py-1 px-4 rounded-full">
+          <div className="text-5xl font-black text-black dark:text-white tabular-nums tracking-tighter">
             {tasks.length}
           </div>
+          <div className="text-xs font-black text-carbon-400 uppercase tracking-widest mt-1">Total Tasks</div>
         </div>
-      </div>
+      </header>
 
-      <div className="pb-24">
+      <div className="pb-32">
         {isLoading ? (
-          <div className="flex justify-center p-8">
-            <Loader2 className="w-8 h-8 animate-spin text-brand-500" />
+          <div className="flex justify-center p-12">
+            <Loader2 className="w-10 h-10 animate-spin text-black dark:text-white" />
           </div>
         ) : tasks.length === 0 ? (
-          <div className="text-center p-8 bg-brand-50 dark:bg-brand-900/50 rounded-2xl border border-dashed border-brand-200 dark:border-brand-700">
-            <p className="text-brand-600/70 dark:text-brand-400">No tasks planned for this day.</p>
+          <div className="text-center p-20 premium-card border-dashed bg-transparent">
+            <p className="text-carbon-400 font-bold uppercase tracking-widest text-sm">The canvas is empty</p>
+            <div className="flex justify-center gap-4 mt-6">
+              <button 
+                onClick={() => setTaskFormOpen(true)}
+                className="px-8 py-3 bg-black text-white dark:bg-white dark:text-black rounded-full font-black uppercase tracking-tighter hover:scale-105 transition-transform"
+              >
+                Single Task
+              </button>
+              <button 
+                onClick={() => setBulkFormOpen(true)}
+                className="px-8 py-3 border-2 border-black dark:border-white text-black dark:text-white rounded-full font-black uppercase tracking-tighter hover:scale-105 transition-transform"
+              >
+                Batch Upload
+              </button>
+            </div>
           </div>
         ) : (
           <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
             <SortableContext items={tasks} strategy={verticalListSortingStrategy}>
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {tasks.map((task) => (
                   <TaskCard key={task.id} task={task} />
                 ))}
@@ -90,14 +118,25 @@ export function PlanPage() {
         )}
       </div>
 
-      <button
-        onClick={() => setTaskFormOpen(true)}
-        className="fixed bottom-20 md:bottom-8 right-4 md:right-8 w-14 h-14 bg-brand-500 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-brand-600 hover:scale-105 active:scale-95 transition-all z-40"
-      >
-        <Plus className="w-6 h-6" />
-      </button>
+      <div className="fixed bottom-24 md:bottom-12 right-6 md:right-12 flex flex-col gap-4 z-40">
+        <button
+          onClick={() => setBulkFormOpen(true)}
+          className="w-12 h-12 bg-carbon-800 text-white dark:bg-carbon-200 dark:text-black rounded-full shadow-xl flex items-center justify-center hover:scale-110 active:scale-90 transition-all border border-white/10 dark:border-black/10"
+          title="Batch Planning"
+        >
+          <Layers className="w-6 h-6" />
+        </button>
+        <button
+          onClick={() => setTaskFormOpen(true)}
+          className="w-16 h-16 bg-black text-white dark:bg-white dark:text-black rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-90 transition-all border border-white/20 dark:border-black/20"
+          title="Add Single Task"
+        >
+          <Plus className="w-8 h-8" />
+        </button>
+      </div>
 
       {isTaskFormOpen && <TaskForm />}
+      {isBulkFormOpen && <BulkTaskForm />}
     </div>
   )
 }

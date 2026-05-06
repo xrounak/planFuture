@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Loader2 } from 'lucide-react'
+import { Loader2, Globe } from 'lucide-react'
 import { useGlobalFeed } from '../hooks/useGlobalFeed'
 import { FeedItem } from '../components/feed/FeedItem'
 import { useAuth } from '../hooks/useAuth'
@@ -9,28 +9,32 @@ export function GlobalFeedPage() {
   const { session } = useAuth()
 
   return (
-    <div className="space-y-6 pb-24">
-      <div className="bg-white dark:bg-brand-900 p-6 rounded-2xl shadow-sm border border-brand-100 dark:border-brand-800 flex justify-between items-center text-center px-4 md:px-8">
+    <div className="space-y-10">
+      <header className="flex justify-between items-end border-b border-carbon-100 dark:border-white/5 pb-8">
         <div>
-          <h1 className="text-2xl font-bold mb-1">Community Feed</h1>
-          <p className="text-sm text-brand-600 dark:text-brand-300">See what others are accomplishing</p>
+          <div className="flex items-center gap-2 text-carbon-400 dark:text-carbon-500 mb-2 font-black uppercase tracking-[0.2em] text-xs">
+            <Globe className="w-4 h-4" />
+            Global Pulse
+          </div>
+          <h1 className="text-5xl font-black tracking-tighter text-black dark:text-white italic uppercase leading-none">Community</h1>
+          <p className="text-lg text-carbon-500 font-medium mt-3 uppercase tracking-tight">Public Achievement Log</p>
         </div>
         {!session && (
-          <Link to="/auth" className="px-4 py-2 bg-brand-500 text-white rounded-lg text-sm font-medium hover:bg-brand-600">
-            Login
+          <Link to="/auth" className="px-8 py-3 bg-black text-white dark:bg-white dark:text-black rounded-full font-black uppercase tracking-tighter hover:scale-105 transition-transform">
+            Join Now
           </Link>
         )}
-      </div>
+      </header>
 
-      <div className="space-y-4">
+      <div className="pb-32">
         {isLoading ? (
-          <div className="flex justify-center p-8">
-            <Loader2 className="w-8 h-8 animate-spin text-brand-500" />
+          <div className="flex justify-center p-12">
+            <Loader2 className="w-10 h-10 animate-spin text-black dark:text-white" />
           </div>
         ) : data?.pages.length && data.pages[0].length > 0 ? (
-          <div className="space-y-4">
+          <div className="space-y-6">
             {data.pages.map((page, i) => (
-              <div key={i} className="space-y-4">
+              <div key={i} className="space-y-6">
                 {page.map((task) => (
                   <FeedItem key={task.id} task={task} />
                 ))}
@@ -41,15 +45,15 @@ export function GlobalFeedPage() {
               <button
                 onClick={() => fetchNextPage()}
                 disabled={isFetchingNextPage}
-                className="w-full py-4 text-brand-600 dark:text-brand-400 font-medium hover:bg-brand-50 dark:hover:bg-brand-800 rounded-xl transition-colors disabled:opacity-50"
+                className="w-full py-6 text-carbon-500 dark:text-carbon-400 font-black uppercase tracking-widest hover:text-black dark:hover:text-white transition-colors disabled:opacity-50"
               >
-                {isFetchingNextPage ? 'Loading more...' : 'Load older tasks'}
+                {isFetchingNextPage ? 'Retrieving Data...' : 'Scroll to Load More'}
               </button>
             )}
           </div>
         ) : (
-          <div className="text-center p-8 text-brand-600/70 bg-white dark:bg-brand-900 rounded-2xl border border-brand-100 dark:border-brand-800">
-            No public tasks found in the last 48h.
+          <div className="text-center p-20 premium-card border-dashed bg-transparent">
+            <p className="text-carbon-400 font-bold uppercase tracking-widest text-sm">Silence in the ether</p>
           </div>
         )}
       </div>

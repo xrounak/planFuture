@@ -5,7 +5,7 @@ import { supabase } from '../lib/supabase'
 import { useAuth } from '../hooks/useAuth'
 import CalendarHeatmap from 'react-calendar-heatmap'
 import 'react-calendar-heatmap/dist/styles.css'
-import { Loader2, Zap, Trophy, Target, Activity, Edit3 } from 'lucide-react'
+import { Loader2, Zap, Trophy, Target, Activity, Edit3, User } from 'lucide-react'
 import type { Profile, DailySummary, Task } from '../types'
 import { FeedItem } from '../components/feed/FeedItem'
 import { EditProfileModal } from '../components/profile/EditProfileModal'
@@ -64,8 +64,17 @@ export function ProfilePage() {
     loadData()
   }, [username, session?.user.id])
 
-  if (loading) return <div className="flex justify-center p-8"><Loader2 className="w-8 h-8 animate-spin text-brand-500" /></div>
-  if (!profile) return <div className="text-center p-8">Profile not found</div>
+  if (loading) return (
+    <div className="flex justify-center p-20">
+      <Loader2 className="w-12 h-12 animate-spin text-black dark:text-white" />
+    </div>
+  )
+  
+  if (!profile) return (
+    <div className="text-center p-20 premium-card border-dashed bg-transparent">
+      <p className="text-carbon-400 font-bold uppercase tracking-widest text-sm">Entity not found</p>
+    </div>
+  )
 
   const heatmapData = summaries.map(s => ({
     date: s.date,
@@ -77,90 +86,103 @@ export function ProfilePage() {
   const avgCompletion = totalPossible > 0 ? Math.round((totalEarned / totalPossible) * 100) : 0
 
   return (
-    <div className="space-y-6 pb-24">
-      <div className="bg-white dark:bg-brand-900 rounded-2xl shadow-sm border border-brand-100 dark:border-brand-800 p-6 flex flex-col md:flex-row gap-6 items-center md:items-start text-center md:text-left relative">
-        {isOwnProfile && (
-          <button 
-            onClick={() => setIsEditing(true)}
-            className="absolute top-4 right-4 p-2 rounded-full text-brand-500 hover:bg-brand-50 dark:hover:bg-brand-800 transition-colors"
-          >
-            <Edit3 className="w-5 h-5" />
-          </button>
-        )}
-        <div className="w-24 h-24 rounded-full bg-brand-200 text-brand-700 dark:bg-brand-700 dark:text-brand-300 flex items-center justify-center overflow-hidden text-3xl font-bold">
-          {profile.avatar_url ? (
-            <img src={profile.avatar_url} alt={profile.username} className="w-full h-full object-cover" />
-          ) : (
-            profile.username.substring(0, 2).toUpperCase()
-          )}
+    <div className="space-y-10">
+      <header className="flex flex-col md:flex-row justify-between items-center md:items-end gap-6 border-b border-carbon-100 dark:border-white/5 pb-10">
+        <div className="flex flex-col md:flex-row items-center md:items-end gap-8 text-center md:text-left">
+          <div className="relative group">
+            <div className="w-32 h-32 rounded-full bg-black text-white dark:bg-white dark:text-black flex items-center justify-center overflow-hidden text-4xl font-black italic border-4 border-white dark:border-black shadow-2xl transition-transform group-hover:scale-105">
+              {profile.avatar_url ? (
+                <img src={profile.avatar_url} alt={profile.username} className="w-full h-full object-cover" />
+              ) : (
+                profile.username.substring(0, 2).toUpperCase()
+              )}
+            </div>
+            {isOwnProfile && (
+              <button 
+                onClick={() => setIsEditing(true)}
+                className="absolute -bottom-2 -right-2 p-3 bg-black text-white dark:bg-white dark:text-black rounded-full shadow-xl hover:scale-110 active:scale-90 transition-all border-2 border-white dark:border-black"
+              >
+                <Edit3 className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+          <div>
+            <div className="flex items-center gap-2 text-carbon-400 dark:text-carbon-500 mb-2 font-black uppercase tracking-[0.2em] text-xs justify-center md:justify-start">
+              <User className="w-4 h-4" />
+              Operator Profile
+            </div>
+            <h1 className="text-5xl font-black tracking-tighter text-black dark:text-white italic uppercase leading-none">
+              {profile.nickname || profile.username}
+            </h1>
+            {profile.nickname && (
+               <p className="text-lg text-carbon-500 font-bold mt-2 uppercase tracking-tight">@{profile.username}</p>
+            )}
+            <p className="text-[10px] font-black text-carbon-400 uppercase tracking-widest mt-4">
+              Active since {format(parseISO(profile.created_at), 'MM.yyyy')}
+            </p>
+          </div>
         </div>
-        <div className="flex-1 mt-2 md:mt-0">
-          <h1 className="text-3xl font-bold text-brand-900 dark:text-brand-50">
-            {profile.nickname ? profile.nickname : profile.username}
-          </h1>
-          {profile.nickname && (
-             <p className="text-brand-500 font-medium">@{profile.username}</p>
-          )}
-          <p className="text-sm text-brand-500 mt-1">Joined {format(parseISO(profile.created_at), 'MMM yyyy')}</p>
+        <div className="text-right hidden lg:block">
+          <div className="text-5xl font-black text-black dark:text-white tabular-nums tracking-tighter">
+            {profile.total_points}
+          </div>
+          <div className="text-xs font-black text-carbon-400 uppercase tracking-widest mt-1">Accumulated Value</div>
         </div>
-      </div>
+      </header>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white dark:bg-brand-900 p-4 rounded-xl border border-brand-100 dark:border-brand-800">
-           <div className="flex items-center gap-2 text-brand-600 dark:text-brand-400 mb-2"><Trophy className="w-4 h-4" /> Points</div>
-           <div className="text-2xl font-bold">{profile.total_points}</div>
-        </div>
-        <div className="bg-white dark:bg-brand-900 p-4 rounded-xl border border-brand-100 dark:border-brand-800">
-           <div className="flex items-center gap-2 text-brand-600 dark:text-brand-400 mb-2"><Zap className="w-4 h-4" /> Streak</div>
-           <div className="text-2xl font-bold">{profile.current_streak}</div>
-        </div>
-        <div className="bg-white dark:bg-brand-900 p-4 rounded-xl border border-brand-100 dark:border-brand-800">
-           <div className="flex items-center gap-2 text-brand-600 dark:text-brand-400 mb-2"><Activity className="w-4 h-4" /> Best</div>
-           <div className="text-2xl font-bold">{profile.longest_streak} <span className="text-sm font-normal text-brand-400">Days</span></div>
-        </div>
-        <div className="bg-white dark:bg-brand-900 p-4 rounded-xl border border-brand-100 dark:border-brand-800">
-           <div className="flex items-center gap-2 text-brand-600 dark:text-brand-400 mb-2"><Target className="w-4 h-4" /> Avg</div>
-           <div className="text-2xl font-bold">{avgCompletion}%</div>
-        </div>
-      </div>
-
-      <div className="bg-white dark:bg-brand-900 p-6 rounded-2xl shadow-sm border border-brand-100 dark:border-brand-800">
-        <h3 className="font-bold mb-4">Activity Heatmap</h3>
-        <CalendarHeatmap
-          startDate={subDays(new Date(), 365)}
-          endDate={new Date()}
-          values={heatmapData}
-          classForValue={(value: any) => {
-            if (!value) return 'fill-brand-100 dark:fill-brand-950'
-            if (value.count >= 100) return 'fill-score-5'
-            if (value.count >= 80) return 'fill-score-4'
-            if (value.count >= 50) return 'fill-score-3'
-            if (value.count >= 25) return 'fill-score-2'
-            if (value.count > 0) return 'fill-score-1'
-            return 'fill-brand-100 dark:fill-brand-950'
-          }}
-          tooltipDataAttrs={(value: any) => {
-            if (!value || !value.date) return {} as any
-            return {
-              'data-tip': `${value.date}: ${value.count}% completion`,
-            } as any
-          }}
-        />
-      </div>
-
-      <div className="space-y-4">
-        <h3 className="font-bold text-lg px-2">Recent Scored Tasks</h3>
-        {recentTasks.map(task => (
-           <FeedItem key={task.id} task={task} />
+        {[
+          { label: 'Points', value: profile.total_points, icon: Trophy },
+          { label: 'Streak', value: profile.current_streak, icon: Zap },
+          { label: 'Record', value: profile.longest_streak, icon: Activity },
+          { label: 'Efficiency', value: `${avgCompletion}%`, icon: Target },
+        ].map((stat, i) => (
+          <div key={i} className="premium-card p-6 flex flex-col items-center justify-center text-center">
+            <stat.icon className="w-5 h-5 text-carbon-400 mb-3" />
+            <div className="text-2xl font-black text-black dark:text-white tracking-tighter tabular-nums">{stat.value}</div>
+            <div className="text-[10px] font-black text-carbon-400 uppercase tracking-[0.2em] mt-1">{stat.label}</div>
+          </div>
         ))}
-        {recentTasks.length === 0 && <p className="text-center text-brand-600/70 p-4">No recently scored tasks.</p>}
+      </div>
+
+      <div className="premium-card p-8 bg-transparent">
+        <h3 className="text-xs font-black uppercase tracking-[0.2em] text-carbon-400 mb-8">Performance Heatmap</h3>
+        <div className="heatmap-container">
+          <CalendarHeatmap
+            startDate={subDays(new Date(), 365)}
+            endDate={new Date()}
+            values={heatmapData}
+            classForValue={(value: any) => {
+              if (!value || value.count === 0) return 'fill-carbon-100 dark:fill-white/5'
+              if (value.count >= 90) return 'fill-black dark:fill-white opacity-100'
+              if (value.count >= 70) return 'fill-black dark:fill-white opacity-80'
+              if (value.count >= 50) return 'fill-black dark:fill-white opacity-60'
+              if (value.count >= 25) return 'fill-black dark:fill-white opacity-40'
+              return 'fill-black dark:fill-white opacity-20'
+            }}
+          />
+        </div>
+      </div>
+
+      <div className="space-y-6">
+        <h3 className="text-xs font-black uppercase tracking-[0.2em] text-carbon-400 px-2">Historical Logs</h3>
+        <div className="space-y-4">
+          {recentTasks.map(task => (
+             <FeedItem key={task.id} task={task} />
+          ))}
+          {recentTasks.length === 0 && (
+            <div className="text-center p-12 premium-card border-dashed bg-transparent">
+              <p className="text-carbon-400 font-bold uppercase tracking-widest text-[10px]">No recent data points recorded</p>
+            </div>
+          )}
+        </div>
       </div>
 
       {isEditing && profile && (
         <EditProfileModal 
           profile={profile} 
           onClose={() => setIsEditing(false)} 
-          onSuccess={(updatedProfile) => {
+          onUpdate={(updatedProfile) => {
             setProfile(updatedProfile)
             setIsEditing(false)
           }} 
