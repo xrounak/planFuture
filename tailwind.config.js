@@ -9,12 +9,17 @@ export default {
     extend: {
       colors: {
         brand: {
-          50:  '#f0fdf4',
-          100: '#dcfce7',
-          400: '#4ade80',
-          500: '#22c55e',
-          600: '#16a34a',
-          900: '#14532d',
+          50:  '#eef2ff', // indigo-50
+          100: '#e0e7ff', // indigo-100
+          200: '#c7d2fe', // indigo-200
+          300: '#a5b4fc', // indigo-300
+          400: '#818cf8', // indigo-400
+          500: '#6366f1', // indigo-500
+          600: '#4f46e5', // indigo-600
+          700: '#4338ca', // indigo-700
+          800: '#3730a3', // indigo-800
+          900: '#312e81', // indigo-900
+          950: '#1e1b4b', // indigo-950
         },
         score: {
           0: '#ef4444',

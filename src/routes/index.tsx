@@ -8,11 +8,16 @@ import { ReviewPage } from './ReviewPage'
 import { GlobalFeedPage } from './GlobalFeedPage'
 import { LeaderboardPage } from './LeaderboardPage'
 import { ProfilePage } from './ProfilePage'
+import { ResetPasswordPage } from './ResetPasswordPage'
 
 export const router = createBrowserRouter([
   {
     path: '/auth',
     element: <AuthPage />
+  },
+  {
+    path: '/reset-password',
+    element: <ResetPasswordPage />
   },
   {
     path: '/',

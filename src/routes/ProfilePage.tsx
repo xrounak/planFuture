@@ -5,9 +5,10 @@ import { supabase } from '../lib/supabase'
 import { useAuth } from '../hooks/useAuth'
 import CalendarHeatmap from 'react-calendar-heatmap'
 import 'react-calendar-heatmap/dist/styles.css'
-import { Loader2, Zap, Trophy, Target, Activity } from 'lucide-react'
+import { Loader2, Zap, Trophy, Target, Activity, Edit3 } from 'lucide-react'
 import type { Profile, DailySummary, Task } from '../types'
 import { FeedItem } from '../components/feed/FeedItem'
+import { EditProfileModal } from '../components/profile/EditProfileModal'
 
 export function ProfilePage() {
   const { username } = useParams()
@@ -17,6 +18,9 @@ export function ProfilePage() {
   const [summaries, setSummaries] = useState<DailySummary[]>([])
   const [recentTasks, setRecentTasks] = useState<Task[]>([])
   const [loading, setLoading] = useState(true)
+  const [isEditing, setIsEditing] = useState(false)
+
+  const isOwnProfile = profile && session?.user.id === profile.id
 
   useEffect(() => {
     async function loadData() {
@@ -74,7 +78,15 @@ export function ProfilePage() {
 
   return (
     <div className="space-y-6 pb-24">
-      <div className="bg-white dark:bg-brand-900 rounded-2xl shadow-sm border border-brand-100 dark:border-brand-800 p-6 flex flex-col md:flex-row gap-6 items-center md:items-start text-center md:text-left">
+      <div className="bg-white dark:bg-brand-900 rounded-2xl shadow-sm border border-brand-100 dark:border-brand-800 p-6 flex flex-col md:flex-row gap-6 items-center md:items-start text-center md:text-left relative">
+        {isOwnProfile && (
+          <button 
+            onClick={() => setIsEditing(true)}
+            className="absolute top-4 right-4 p-2 rounded-full text-brand-500 hover:bg-brand-50 dark:hover:bg-brand-800 transition-colors"
+          >
+            <Edit3 className="w-5 h-5" />
+          </button>
+        )}
         <div className="w-24 h-24 rounded-full bg-brand-200 text-brand-700 dark:bg-brand-700 dark:text-brand-300 flex items-center justify-center overflow-hidden text-3xl font-bold">
           {profile.avatar_url ? (
             <img src={profile.avatar_url} alt={profile.username} className="w-full h-full object-cover" />
@@ -82,8 +94,13 @@ export function ProfilePage() {
             profile.username.substring(0, 2).toUpperCase()
           )}
         </div>
-        <div className="flex-1">
-          <h1 className="text-3xl font-bold text-brand-900 dark:text-brand-50">{profile.username}</h1>
+        <div className="flex-1 mt-2 md:mt-0">
+          <h1 className="text-3xl font-bold text-brand-900 dark:text-brand-50">
+            {profile.nickname ? profile.nickname : profile.username}
+          </h1>
+          {profile.nickname && (
+             <p className="text-brand-500 font-medium">@{profile.username}</p>
+          )}
           <p className="text-sm text-brand-500 mt-1">Joined {format(parseISO(profile.created_at), 'MMM yyyy')}</p>
         </div>
       </div>
@@ -138,6 +155,17 @@ export function ProfilePage() {
         ))}
         {recentTasks.length === 0 && <p className="text-center text-brand-600/70 p-4">No recently scored tasks.</p>}
       </div>
+
+      {isEditing && profile && (
+        <EditProfileModal 
+          profile={profile} 
+          onClose={() => setIsEditing(false)} 
+          onSuccess={(updatedProfile) => {
+            setProfile(updatedProfile)
+            setIsEditing(false)
+          }} 
+        />
+      )}
     </div>
   )
 }

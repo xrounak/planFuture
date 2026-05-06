@@ -1,6 +1,7 @@
 export interface Profile {
   id: string
   username: string
+  nickname: string | null
   avatar_url: string | null
   total_points: number
   weekly_points: number

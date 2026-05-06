@@ -11,20 +11,25 @@ export function BottomNav() {
   ]
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-brand-900 border-t border-brand-100 dark:border-brand-800 md:hidden z-50">
-      <div className="flex justify-around">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-brand-900/80 backdrop-blur-lg border-t border-brand-200 dark:border-brand-800 md:hidden z-50 safe-area-pb">
+      <div className="flex justify-around items-center px-2 py-2">
         {links.map(({ to, icon: Icon, label }) => (
           <NavLink
             key={to}
             to={to}
             className={({ isActive }) =>
-              `flex flex-col items-center p-3 text-xs font-medium transition-colors ${
-                isActive ? 'text-brand-500' : 'text-brand-600/60 dark:text-brand-100/60 hover:text-brand-600 dark:hover:text-brand-100'
+              `flex flex-col items-center p-2 rounded-xl text-[10px] font-semibold transition-all duration-300 ${isActive
+                ? 'text-brand-600 dark:text-brand-300 transform scale-110'
+                : 'text-brand-400/70 dark:text-brand-500/70 hover:text-brand-600 dark:hover:text-brand-400'
               }`
             }
           >
-            <Icon className="w-6 h-6 mb-1" />
-            {label}
+            {({ isActive }) => (
+              <>
+                <Icon className={`w-6 h-6 mb-1 ${isActive ? 'drop-shadow-md' : ''}`} />
+                {label}
+              </>
+            )}
           </NavLink>
         ))}
       </div>
